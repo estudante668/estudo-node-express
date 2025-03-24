@@ -3,8 +3,8 @@ const Camisas = require('../modelo/camisa.modelo.js')
 
 buscarCamisas = async (req, res) =>{
   try {
-     const camisa = await Camisas.find({})
-     res.status(200).json(camisa);
+     const camisas = await Camisas.find({})
+     res.status(200).json(camisas);
   } catch (error) {
     res.status(500).json({message:error.message})
   }
@@ -13,8 +13,8 @@ buscarCamisas = async (req, res) =>{
 buscarCamisasId = async (req, res) => {
   try {
        const {id} = req.params;
-       const camisa = await Camisa.findById(id);
-       res.status(200).json(camisa);
+       const camisa = await Camisa.findById(id)
+       res.status(200).json(camisa)
   } catch (error) {
     res.status(500).json({message:error.message})
   }
