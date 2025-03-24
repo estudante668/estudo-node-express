@@ -1,65 +1,18 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
-const Camisas = require('./modelo/camisa.modelo.js');
+
+const CamisasRotas = require('./rotas/rotas.js')
  
 app.use(express.json());
+app.use(express.urlencoded({extended: false}));
+app.use('/api/loja', CamisasRotas);
 
 app.get('/', (req, res)=>{
   res.send('Ola sou servidor');
 });
 
-app.post('/camisa', async (req, res)=>{
-   try {
-    const camisa = await Camisas.create(req.body);
-    res.status(201).json(camisa);
-   } catch (error) {
-  res.status(500).json({message:error.message});
-   }
-});
 
-app.get('/buscarCamisa', async (req, res)=>{
-  try {
-    const camisas = await Camisas.find({});
-    res.status(200).json(camisas)
-  } catch (error) {
-    res.status(500).json({message:error.message});
-  }
-})
-
-app.get('/buscarCamisa/:id', async (req,res)=>{
-  try {
-    const {id} = req.params
-    const camisa = await Camisas.findById(id);
-    res.status(200).json(camisa);
-  } catch (error) {
-    res.status(500).json({message:error.message});
-  }
-})
-
-app.put('/buscarCamisa/:id', async (req, res)=>{
-  try {
-    const {id} = req.params
-    const camisaNaoAtualizado = await Camisa.findByIdAndUpdate(id);
-    if(!camisaNaoAtualizado){
-     res.status(404).json("Produto não encontrado")
-    }
-    const camisa = await Camisa.findById(id);
-    res.status(200).json(camisa);
-  } catch (error) {
-    res.status(500).json({message:error.message});
-  }
-})
-
-app.delete('/buscarCamisa/:id', async (req, res)=>{
-  try {
-     const {id} = req.params;
-     await Camisas.findByIdAndDelete(id);
-     res.status(204).json("Produto Deletado")
-  } catch (error) {
-    res.status(500).json({message:error.message});
-  }
-})
 
 mongoose.connect("mongodb+srv://desenhista668:K2tdF0AslntCF66J@cluster0.c1zkf.mongodb.net/Banco-Teste?retryWrites=true&w=majority&appName=Cluster0").then(()=>{
   console.log("Banco conectado");
@@ -70,4 +23,6 @@ mongoose.connect("mongodb+srv://desenhista668:K2tdF0AslntCF66J@cluster0.c1zkf.mo
   console.log('Erro de conecção');
 });
 
-
+/**
+ * 
+ */
