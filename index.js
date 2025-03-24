@@ -37,6 +37,30 @@ app.get('/buscarCamisa/:id', async (req,res)=>{
   }
 })
 
+app.put('/buscarCamisa/:id', async (req, res)=>{
+  try {
+    const {id} = req.params
+    const camisaNaoAtualizado = await Camisa.findByIdAndUpdate(id);
+    if(!camisaNaoAtualizado){
+     res.status(404).json("Produto não encontrado")
+    }
+    const camisa = await Camisa.findById(id);
+    res.status(200).json(camisa);
+  } catch (error) {
+    res.status(500).json({message:error.message});
+  }
+})
+
+app.delete('/buscarCamisa/:id', async (req, res)=>{
+  try {
+     const {id} = req.params;
+     await Camisas.findByIdAndDelete(id);
+     res.status(204).json("Produto Deletado")
+  } catch (error) {
+    res.status(500).json({message:error.message});
+  }
+})
+
 mongoose.connect("mongodb+srv://desenhista668:K2tdF0AslntCF66J@cluster0.c1zkf.mongodb.net/Banco-Teste?retryWrites=true&w=majority&appName=Cluster0").then(()=>{
   console.log("Banco conectado");
   app.listen(3000, ()=>{
